@@ -9,6 +9,9 @@ interface Content {
   body: string;
   tags: { name: string }[];
   createdAt: string;
+  authorId: number;
+  startTime: string;
+  endTime: string;
 }
 
 interface ContentResponse {
@@ -37,7 +40,7 @@ const ContentViewPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [contentList, setContentList] = useState<ContentResponse>({ content: [], totalElements: 0 });
-  const pageSize = 2;
+  const pageSize = 1;
 
   const loadData = useCallback(async () => {
     const data = await fetchContent(currentPage - 1, pageSize);
@@ -71,6 +74,18 @@ const ContentViewPage: React.FC = () => {
     {
       title: '创建时间creation time',
       dataIndex: 'createdAt',
+    },
+    {
+      title: '作者ID author ID',
+      dataIndex: 'authorID',
+    },
+    {
+      title: '起始时期start time',
+      dataIndex: 'startTime',
+    },
+    {
+        title: '结束时期end time',
+        dataIndex: 'endTime',
     },
   ];
 
