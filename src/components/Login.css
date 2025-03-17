@@ -1,0 +1,76 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 占满整个视口高度 */
+    width: 100vw; /* 占满整个视口宽度 */
+    background-color: #f8f9fa; /* 更柔和的背景颜色 */
+    font-family: 'Arial', sans-serif; /* 使用更现代的字体 */
+  }
+  
+  .login-container h2 {
+    font-size: 2rem; /* 标题字体大小 */
+    margin-bottom: 1.5rem; /* 标题与表单的间距 */
+    color: #333; /* 标题颜色 */
+    font-weight: 600; /* 加粗 */
+  }
+  
+  form {
+    background: white;
+    padding: 2rem; /* 增加内边距 */
+    border-radius: 12px; /* 更大的圆角 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 更柔和的阴影 */
+    width: 350px; /* 表单宽度 */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 表单内容居中 */
+  }
+  
+  form div {
+    width: 100%; /* 表单项宽度 */
+    margin-bottom: 1.5rem; /* 表单项之间的间距 */
+  }
+  
+  label {
+    font-size: 0.9rem; /* 标签字体大小 */
+    margin-bottom: 0.5rem; /* 标签与输入框的间距 */
+    color: #555; /* 标签颜色 */
+    font-weight: 500; /* 加粗 */
+    display: block; /* 标签单独一行 */
+    text-align: left; /* 标签左对齐 */
+  }
+  
+  input {
+    width: 90%; /* 输入框宽度 */
+    padding: 0.75rem; /* 输入框内边距 */
+    border: 1px solid #ddd; /* 更细的边框 */
+    border-radius: 6px; /* 输入框圆角 */
+    font-size: 1rem; /* 输入框字体大小 */
+    color: #333; /* 输入框文字颜色 */
+    background-color: #f0f4f8; /* 输入框背景颜色 */
+    transition: border-color 0.3s ease, background-color 0.3s ease; /* 过渡效果 */
+  }
+  
+  input:focus {
+    border-color: #007bff; /* 聚焦时边框颜色 */
+    background-color: #e2e8f0; /* 聚焦时背景颜色 */
+    outline: none; /* 移除默认聚焦轮廓 */
+  }
+  
+  button {
+    width: 100%; /* 按钮宽度 */
+    padding: 0.75rem; /* 按钮内边距 */
+    background-color: #007bff; /* 按钮背景颜色 */
+    color: white;
+    border: none;
+    border-radius: 6px; /* 按钮圆角 */
+    font-size: 1rem; /* 按钮字体大小 */
+    font-weight: 500; /* 按钮字体加粗 */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* 背景颜色过渡效果 */
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* 按钮悬停颜色 */
+  }
