@@ -2,6 +2,9 @@ import { Spin, Table } from '@douyinfe/semi-ui';
 import { useCallback, useEffect, useState } from 'react';
 import { SERVER_URL } from './cfg.ts';
 import axios from 'axios';
+import { Tag } from './api/tag.ts';
+import TagManager from './TagManager.tsx';
+import { updateTagsForContent } from './api/tag.ts';
 
 interface Content {
   id: number;
@@ -56,6 +59,19 @@ const ContentViewPage: React.FC = () => {
     return <Spin />;
   }
 
+  const handleTagsChange = async (id: number, newTags: Tag[]) => {
+    try {
+      const tagIds = newTags.map(tag => tag.id);
+      await updateTagsForContent(id, tagIds);
+      const updatedContentList = contentList.content.map(content => 
+        content.id === id ? { ...content, tags: newTags } : content
+      );
+      setContentList({ ...contentList, content: updatedContentList });
+    } catch (error) {
+      console.error('Failed to update tags for content:', error);
+    }
+  };
+
   const columns = [
     {
       title: '标题Title',
@@ -69,7 +85,9 @@ const ContentViewPage: React.FC = () => {
     {
       title: '标签tags',
       dataIndex: 'tags',
-      render: (tags: { name: string }[]) => tags.map(t => t.name).join(', '),
+      render: (tags: Tag[], record: Content) => (
+        <TagManager initialTags={tags} onTagsChange={(newTags) => handleTagsChange(record.id, newTags)} />
+      ),
     },
     {
       title: '创建时间creation time',
