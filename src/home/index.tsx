@@ -65,7 +65,7 @@ const Home: React.FC = () => {
                 newContent = <Pageview />
                 break;
             case '2':
-                newBreadcrumbItems = ['Check Content'];
+                newBreadcrumbItems = ['Content Review'];
                 break;
             case '3':
                 newBreadcrumbItems = ['UserList', 'Tom'];
