@@ -1,43 +1,9 @@
 import { Spin, Table } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
-import { SERVER_URL } from './cfg.ts';
-import axios from 'axios';
 import { Tag } from './api/tag.ts';
 import TagManager from './TagManager.tsx';
 import { updateTagsForContent } from './api/tag.ts';
-
-interface Content {
-  id: number;
-  title: string;
-  body: string;
-  tags: { name: string }[];
-  createdAt: string;
-  authorId: number;
-  startTime: string;
-  endTime: string;
-}
-
-interface ContentResponse {
-  content: Content[];
-  totalElements: number;
-}
-
-const fetchContent = async (page: number, size: number): Promise<ContentResponse> => {
-  const url = SERVER_URL + '/content/list';
-  return await axios
-    .get(url, {
-      params: {
-        page: page,
-        size: size,
-      },
-    })
-    .then((res) => {
-      console.assert(res.status === 200);
-      console.assert(res.data.code === 0);
-      return res.data.data;
-    })
-    .catch(console.error);
-};
+import { Content, ContentResponse, fetchContent } from './api/content.ts';
 
 const ContentViewPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
