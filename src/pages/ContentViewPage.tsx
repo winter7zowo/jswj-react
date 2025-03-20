@@ -1,9 +1,9 @@
 import { Spin, Table } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
-import { Tag } from './api/tag.ts';
-import TagManager from './TagManager.tsx';
-import { updateTagsForContent } from './api/tag.ts';
-import { Content, ContentResponse, fetchContent } from './api/content.ts';
+import { Tag } from '../api/tag.ts';
+import TagManager from '../components/TagManager.tsx';
+import { updateTagsForContent } from '../api/tag.ts';
+import { Content, ContentResponse, fetchContent } from '../api/content.ts';
 
 const ContentViewPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
