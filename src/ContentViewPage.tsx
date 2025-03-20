@@ -1,4 +1,4 @@
-import { Spin, Table } from '@douyinfe/semi-ui';
+import { Spin, Table } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { SERVER_URL } from './cfg.ts';
 import axios from 'axios';
@@ -113,10 +113,10 @@ const ContentViewPage: React.FC = () => {
       dataSource={contentList.content}
       rowKey="id"
       pagination={{
-        currentPage,
+        current: currentPage,
         pageSize,
         total: contentList.totalElements,
-        onPageChange: setCurrentPage,
+        onChange: setCurrentPage,
       }}
     />
   );

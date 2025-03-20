@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Select, Space, Tag as TagComponent } from '@douyinfe/semi-ui';
+import { Select, Space, Tag as TagComponent } from 'antd';
 import { fetchAllTags } from './api/tag';
 
 interface Tag {
