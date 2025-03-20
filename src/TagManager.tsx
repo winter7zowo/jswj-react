@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Select, Space, Tag as TagComponent } from 'antd';
-import { fetchAllTags } from './api/tag';
-
-interface Tag {
-    id: number;
-    name: string;
-}
+import { fetchAllTags, Tag } from './api/tag';
 
 interface TagManagerProps {
     initialTags: Tag[];
