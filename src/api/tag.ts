@@ -7,7 +7,7 @@ export interface Tag {
 
 export const fetchAllTags = async (): Promise<Tag[]> => {
     return await api
-        .get('/tags/')
+        .get('/tags')
         .then((res) => {
             if (res.status !== 200 || res.data.code !== 0) {
                 throw new Error('Failed to fetch tags');
