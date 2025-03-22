@@ -61,3 +61,33 @@ export const updateTagsForContent = async (contentId: number, tagIds: number[]):
             throw new Error('Error updating tags for content');
         });
 };
+
+export const renameTag = async (tagId: number, newName: string): Promise<Tag> => {
+    console.log(`/tags/${tagId}/rename`, { newName });
+    return await api
+        .put(`/tags/${tagId}/rename`, { newName })
+        .then((res) => {
+            if (res.status !== 200 || res.data.code !== 0) {
+                throw new Error('Failed to rename tag');
+            }
+            return res.data.data;
+        })
+        .catch((error) => {
+            console.error('Error renaming tag:', error);
+            throw new Error('Error renaming tag');
+        });
+};
+
+export const deleteTag = async (tagId: number): Promise<void> => {
+    return await api
+        .delete(`/tags/${tagId}`)
+        .then((res) => {
+            if (res.status !== 200 || res.data.code !== 0) {
+                throw new Error('Failed to delete tag');
+            }
+        })
+        .catch((error) => {
+            console.error('Error deleting tag:', error);
+            throw new Error('Error deleting tag');
+        });
+};
