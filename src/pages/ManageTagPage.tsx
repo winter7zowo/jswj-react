@@ -31,26 +31,22 @@ const ManageTagPage: React.FC = () => {
         setIsModalVisible(true);
     };
 
-    const handleDelete = (tagId: number) => {
-        Modal.confirm({
-            title: 'Are you sure you want to delete this tag?',
-            content: 'This action is irreversible and will delete this tag from all related content.',
-            onOk: async () => {
-                setLoading(true);
-                try {
-                    await deleteTag(tagId);
-                    message.success('Tag deleted successfully');
-                    loadTags();
-                } catch {
-                    message.error('Failed to delete tag');
-                } finally {
-                    setLoading(false);
-                }
-            },
-            onCancel() {
-                message.info('Tag deletion cancelled')
-            },
-        });
+    const handleDelete = async (tagId: number) => {
+        setLoading(true);
+        try {
+            await deleteTag(tagId);
+            message.success('Tag deleted successfully');
+            loadTags();
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                message.error(error.message);
+            } else {
+                console.error("An unknown error occurred:", error);
+                message.error('Failed to delete tag');
+            }
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleOk = async () => {
@@ -60,8 +56,13 @@ const ManageTagPage: React.FC = () => {
                 await renameTag(currentTag.id, newTagName);
                 message.success('Tag renamed successfully');
                 loadTags();
-            } catch {
-                message.error('Failed to rename tag');
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    message.error(error.message);
+                } else {
+                    console.error("An unknown error occurred:", error);
+                    message.error('Failed to rename tag');
+                }
             } finally {
                 setLoading(false);
                 setIsModalVisible(false);
