@@ -33,6 +33,11 @@ export const renameTag = async (tagId: number, newName: string): Promise<Tag> =>
     return res.data.data;
 };
 
+export const mergeTags = async (sourceTagId: number, targetTagId: number): Promise<void> => {
+    const res = await api.put('/tags/merge', { sourceTagId, targetTagId });
+    validateResponse(res, 'Failed to merge tags');
+};
+
 export const deleteTag = async (tagId: number): Promise<void> => {
     const res = await api.delete(`/tags/${tagId}`);
     validateResponse(res, 'Failed to delete tag');

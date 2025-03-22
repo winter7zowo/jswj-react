@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button, Modal, Input, message, Space } from 'antd';
 import { Tag, fetchAllTags, renameTag, deleteTag } from '../api/tag.ts';
+import MergeTagModal from '../components/MergeTagModal.tsx';
 
 const ManageTagPage: React.FC = () => {
     const [tags, setTags] = useState<Tag[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+    const [isMergeModalVisible, setIsMergeModalVisible] = useState<boolean>(false);
     const [currentTag, setCurrentTag] = useState<Tag | null>(null);
+    const [sourceTag, setSourceTag] = useState<Tag | null>(null);
     const [newTagName, setNewTagName] = useState<string>('');
 
     useEffect(() => {
@@ -29,6 +32,11 @@ const ManageTagPage: React.FC = () => {
         setCurrentTag(tag);
         setNewTagName(tag.name);
         setIsModalVisible(true);
+    };
+
+    const handleMerge = (tag: Tag) => {
+        setSourceTag(tag);
+        setIsMergeModalVisible(true);
     };
 
     const handleDelete = async (tagId: number) => {
@@ -93,6 +101,9 @@ const ManageTagPage: React.FC = () => {
                     <Button type="link" onClick={() => handleRename(record)}>
                         Rename
                     </Button>
+                    <Button type="link" danger onClick={() => handleMerge(record)}>
+                        Merge To
+                    </Button>
                     <Button type="link" danger onClick={() => handleDelete(record.id)}>
                         Delete
                     </Button>
@@ -121,6 +132,15 @@ const ManageTagPage: React.FC = () => {
                     onChange={(e) => setNewTagName(e.target.value)}
                 />
             </Modal>
+            <MergeTagModal
+                visible={isMergeModalVisible}
+                onOk={() => setIsMergeModalVisible(false)}
+                onCancel={() => setIsMergeModalVisible(false)}
+                tags={tags}
+                sourceTag={sourceTag}
+                loadTags={loadTags}
+                setLoading={setLoading}
+            />
         </div>
     );
 };
