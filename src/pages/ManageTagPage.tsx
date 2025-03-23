@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Table, Button, Modal, Input, message, Space } from 'antd';
 import { Tag, fetchAllTags, renameTag, deleteTag } from '../api/tag.ts';
 import MergeTagModal from '../components/MergeTagModal.tsx';
+import { ApiError } from '../util.ts';
+import { ExceptionConstants } from '../errorCode.ts';
 
 const ManageTagPage: React.FC = () => {
     const [tags, setTags] = useState<Tag[]>([]);
@@ -65,7 +67,9 @@ const ManageTagPage: React.FC = () => {
                 message.success('Tag renamed successfully');
                 loadTags();
             } catch (error: unknown) {
-                if (error instanceof Error) {
+                if (error instanceof ApiError && error.code === ExceptionConstants.TAG_NAME_ALREADY_EXISTS) {
+                    message.error(`Cannot rename because tag "${newTagName}" already exists. Did you mean to merge "${currentTag.name}" to "${newTagName}"?`);
+                } else if (error instanceof Error) {
                     message.error(error.message);
                 } else {
                     console.error("An unknown error occurred:", error);
