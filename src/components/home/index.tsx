@@ -9,6 +9,7 @@ import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import Pageview from '../pageview';
 import axios from 'axios';
+import Review from '../review';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -30,7 +31,7 @@ function getItem(
 
 const items: MenuItem[] = [
     getItem('Data Overview', '1', <PieChartOutlined />),
-    getItem('Check Content', '2', <DesktopOutlined />),
+    getItem('Content Review', '2', <DesktopOutlined />),
     getItem('UserList', 'sub1', <UserOutlined />, [
         getItem('Tom', '3'),
         getItem('Bill', '4'),
@@ -46,6 +47,7 @@ const Home: React.FC = () => {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
     const [content, setContent] = useState<ReactNode>(<Pageview />)
+    const [ReviewId, setReviewId] = useState<string>("null")
 
     useEffect(() => {
         axios.post('http://localhost:8080/datas/visits/record')
@@ -65,7 +67,8 @@ const Home: React.FC = () => {
                 newContent = <Pageview />
                 break;
             case '2':
-                newBreadcrumbItems = ['Content Review'];
+                newBreadcrumbItems = ['Content Review', ReviewId];
+                newContent = <Review ReviewId={ReviewId} setReviewId={setReviewId} />
                 break;
             case '3':
                 newBreadcrumbItems = ['UserList', 'Tom'];

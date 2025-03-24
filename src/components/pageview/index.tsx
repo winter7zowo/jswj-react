@@ -4,7 +4,7 @@ import axios from 'axios';
 const pageview = () => {
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(null);
 
   axios.get('http://localhost:8080/datas/visits/get_today')
     .then(response => {
