@@ -11,14 +11,8 @@ interface ArtifactData extends Artifact {
     files: []
 }
 
-interface ReviewProps {
-    ReviewId: string;
-    setReviewId: (ReviewId: string) => void;
-}
-
-function Review({ ReviewId, setReviewId }: ReviewProps) {
-
-    setReviewId('1');
+function Review() {
+    const [reviewId, setReviewId] = useState<string>("1")
 
     const [title, setTitle] = useState('');
 
