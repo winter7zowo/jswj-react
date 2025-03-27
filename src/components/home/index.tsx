@@ -9,7 +9,7 @@ import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import Pageview from '../pageview';
 import axios from 'axios';
-import Review from '../review';
+import Step from '../step';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -68,7 +68,7 @@ const Home: React.FC = () => {
                 break;
             case '2':
                 newBreadcrumbItems = ['Content Review', ReviewId];
-                newContent = <Review ReviewId={ReviewId} setReviewId={setReviewId} />
+                newContent = <Step ReviewId={ReviewId} setReviewId={setReviewId} />
                 break;
             case '3':
                 newBreadcrumbItems = ['UserList', 'Tom'];

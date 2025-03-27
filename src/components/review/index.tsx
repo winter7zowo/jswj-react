@@ -24,7 +24,6 @@ function Review({ ReviewId, setReviewId }: ReviewProps) {
 
     const [intro, setIntro] = useState('');
 
-
     useEffect(() => {
         http.get(`/contents/1/get`)
             .then((res) => {
@@ -35,29 +34,6 @@ function Review({ ReviewId, setReviewId }: ReviewProps) {
             })
             .catch(error => message.error(`Failed to get artifact: ${error.message}`))
     }, [])
-
-    const submit = () => {
-
-        http.post(`/contents/1/review`)
-            .then(() => {
-                message.success('Successfully uploaded! :)');
-                clearData();
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
-            })
-            .catch(error => message.error(`Failed to upload artifact: ${error.message}`)
-            )
-    };
-
-    const handleOkAndCancel = () => {
-        submit();
-    }
-
-    function clearData() {
-        setTitle('');
-        setIntro('');
-    }
 
 
     return (
@@ -76,12 +52,6 @@ function Review({ ReviewId, setReviewId }: ReviewProps) {
                 <Tag color="light-blue" prefixIcon={<IconPaperclip />}>Files</Tag>
                 <Files files={files} setFiles={setFiles} artifactId={artifactId} setFileUploading={setFileUploading} />
             </div> */}
-
-            <Flex gap="small" wrap>
-                <Button color="green" variant="solid" onClick={handleOkAndCancel}>Accept</Button>
-                <Button color="red" variant="solid" onClick={handleOkAndCancel}>Reject</Button>
-            </Flex>
-
 
         </>
     );
