@@ -1,4 +1,4 @@
-import { TextArea } from '@douyinfe/semi-ui';
+import { Input } from 'antd';
 
 interface IntroProps {
     intro: string;
@@ -8,14 +8,12 @@ interface IntroProps {
 function Intro({ intro, setIntro }: IntroProps) {
 
     return (
-        <TextArea
+        <Input.TextArea
             disabled={true}
             value={intro}
             style={{ margin: '10px 0 10px 0' }}
-            showClear
-            onChange={(value: string) => setIntro(value)}>
-
-        </TextArea>
+            onChange={(value) => setIntro(value.target.value)}>
+        </Input.TextArea>
     );
 }
 

@@ -1,5 +1,6 @@
-import { Upload, Button, Toast } from '@douyinfe/semi-ui';
-import { IconUpload } from '@douyinfe/semi-icons';
+import { Button, message } from 'antd';
+import { Upload } from '@douyinfe/semi-ui';
+import { UploadOutlined } from '@ant-design/icons';
 import http from '../../../http';
 import { FileItem } from '@douyinfe/semi-ui/lib/es/upload';
 import { apiConfig } from '../../../config';
@@ -30,7 +31,7 @@ function Files({ files, setFiles, artifactId, setFileUploading }: FileProps) {
         return http.delete(`/files/${fileItem.id}`)
             .then(() => true)
             .catch(error => {
-                Toast.error(`Failed to delete file: ${error.message}`);
+                message.error(`Failed to delete file: ${error.message}`);
                 return false;
             }) as Promise<boolean>;
     }
@@ -49,8 +50,7 @@ function Files({ files, setFiles, artifactId, setFileUploading }: FileProps) {
         >
             <Button
                 style={{ margin: '10px 0 10px 0' }}
-                icon={<IconUpload />}
-                theme="light"
+                icon={<UploadOutlined />}
             >
                 点击上传（最大 100 MB）
             </Button>
