@@ -21,3 +21,11 @@ export const validateResponse = (res: AxiosResponse, errorMessage: string): void
         throw new ApiError(res.data.message, res.data.code);
     }
 };
+
+export const replaceError = (errorMessage: string) => (error: unknown) => {
+    if (error instanceof Error && !(error instanceof ApiError)) {
+        throw new Error(errorMessage);
+    } else {
+        throw error;
+    }
+}

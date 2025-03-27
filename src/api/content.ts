@@ -1,4 +1,5 @@
-import { api } from "../cfg";
+import { default as api } from "../http";
+import { replaceError } from '../util.ts';
 
 export interface Content {
     id: number;
@@ -17,17 +18,7 @@ export interface ContentResponse {
 }
 
 export const fetchContent = async (page: number, size: number): Promise<ContentResponse> => {
-    return await api
-        .get('/content/list', {
-            params: {
-                page: page,
-                size: size,
-            },
-        })
-        .then((res) => {
-            console.assert(res.status === 200);
-            console.assert(res.data.code === 0);
-            return res.data.data;
-        })
-        .catch(console.error);
+    return api.get<unknown, ContentResponse>('/content/list', {
+        params: { page, size },
+    }).catch(replaceError('Failed to fetch content'));
 };
