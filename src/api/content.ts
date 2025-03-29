@@ -17,8 +17,20 @@ export interface ContentResponse {
     totalElements: number;
 }
 
-export const fetchContent = async (page: number, size: number): Promise<ContentResponse> => {
+export const fetchContent = async (page: number, size: number): Promise<ContentResponse | void> => {
     return api.get<unknown, ContentResponse>('/content/list', {
         params: { page, size },
     }).catch(replaceError('Failed to fetch content'));
 };
+
+export const deleteContent = async (id: number): Promise<void> => {
+    return api.patch<unknown, void>(`/content/${id}/delete`)
+        .catch(replaceError('Failed to delete this content'));
+};
+
+export const getAllByUser = async (username: string): Promise<ContentResponse | void> => {
+    return api.get<unknown, ContentResponse>(`users/contents/by-user/${username}`, {
+        params: { username },
+    }).catch(replaceError('Failed to fetch content'));
+}
+
