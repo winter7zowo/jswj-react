@@ -7,6 +7,7 @@ export interface Content {
     body: string;
     tags: { name: string }[];
     createdAt: string;
+    rating: number;
     authorId: number;
     startTime: string;
     endTime: string;
@@ -33,4 +34,11 @@ export const getAllByUser = async (username: string): Promise<ContentResponse | 
         params: { username },
     }).catch(replaceError('Failed to fetch content'));
 }
+
+export const updateContent = async (id: number, rate: number): Promise<void> => { 
+    return api.post<unknown, void>(
+        '/content/update',
+        { id, rate }
+    ).catch(replaceError('Failed to update this content'));
+};
 
