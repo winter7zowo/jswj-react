@@ -1,19 +1,17 @@
-import { Input } from '@douyinfe/semi-ui';
+import { Input } from 'antd';
 
 interface TitleProps {
     title: string;
-    setTitle: (title: string) => void;
 }
 
-function Title({ title, setTitle }: TitleProps) {
+function Title({ title }: TitleProps) {
 
     return (
         <>
             <Input
                 disabled={true}
                 value={title}
-                style={{ margin: '10px 0 10px 0' }}
-                onChange={value => setTitle(value)}>
+                style={{ margin: '10px 0 10px 0' }}>
             </Input>
         </>
     );

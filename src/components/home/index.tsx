@@ -8,8 +8,8 @@ import {
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import Pageview from '../pageview';
-import axios from 'axios';
 import Step from '../step';
+import http from '../../http';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -40,21 +40,27 @@ const items: MenuItem[] = [
     getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
 ];
 
-const Home: React.FC = () => {
+function Home() {
     const [collapsed, setCollapsed] = useState(false);
     const [breadcrumbItems, setBreadcrumbItems] = useState<string[]>(['User', 'Bill']);
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
     const [content, setContent] = useState<ReactNode>(<Pageview />)
-    const [ReviewId, setReviewId] = useState<string>("null")
+    const [reviewId, setReviewId] = useState<string>("null")
 
     useEffect(() => {
-        axios.post('http://localhost:8080/datas/visits/record')
+        http.post('http://localhost:8080/datas/visits/record')
             .catch(error => {
                 console.error('Error recording visit:', error);
             });
     }, []);
+
+    useEffect(() => {
+        if (reviewId !== "null") {
+            setBreadcrumbItems(['Content Review', "content-" + reviewId]);
+        }
+    }, [reviewId]);
 
     const handleMenuClick: MenuProps['onClick'] = (e) => {
         const { key } = e;
@@ -67,8 +73,9 @@ const Home: React.FC = () => {
                 newContent = <Pageview />
                 break;
             case '2':
-                newBreadcrumbItems = ['Content Review', ReviewId];
-                newContent = <Step ReviewId={ReviewId} setReviewId={setReviewId} />
+                setReviewId("1")
+                newBreadcrumbItems = ['Content Review', reviewId];
+                newContent = <Step reviewId={reviewId} />
                 break;
             case '3':
                 newBreadcrumbItems = ['UserList', 'Tom'];
@@ -89,7 +96,6 @@ const Home: React.FC = () => {
                 newBreadcrumbItems = ['User', 'Bill'];
                 break;
         }
-
         setBreadcrumbItems(newBreadcrumbItems);
         setContent(newContent)
     };

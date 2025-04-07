@@ -1,49 +1,49 @@
-import React, { useState } from 'react';
-import { Button, Flex, message, Steps, theme } from 'antd';
+import { useState } from 'react';
+import { Button, Flex, message, Steps } from 'antd';
 import Review from '../review';
 import http from '../../http';
 
-const Step: React.FC = () => {
-    const { token } = theme.useToken();
+function Step({ reviewId }: { reviewId: string }) {
+
     const [current, setCurrent] = useState(0);
-    const [ReviewId, setReviewId] = useState<string>("null")
+
+    const onChange = (previous: number) => {
+        if (previous < current) {
+            setCurrent(previous);
+        }
+    };
 
     const steps = [
 
         {
             title: '总体审核',
-            content: <Review ReviewId={ReviewId} setReviewId={setReviewId} />,
+            content: <Review reviewId={reviewId} reviewStep={1} />,
+            description: 'First-description',
         },
         {
             title: '事实核查',
-            content: 'Second-content',
+            content: <Review reviewId={reviewId} reviewStep={2} />,
+            description: 'Second-description',
         },
         {
             title: '错字病句核查',
-            content: 'Third-content',
+            content: <Review reviewId={reviewId} reviewStep={3} />,
+            description: 'Third-description',
         },
         {
-            title: '内容审核',
-            content: 'Last-content',
+            title: '敏感内容审核',
+            content: <Review reviewId={reviewId} reviewStep={4} />,
+            description: 'Last-description',
         },
     ];
 
-    const next = () => {
-        setCurrent(current + 1);
-    };
-
-    const prev = () => {
-        setCurrent(current - 1);
-    };
-
-    const items = steps.map((item) => ({ key: item.title, title: item.title }));
+    const items = steps.map((item) => ({ key: item.title, title: item.title, description: item.description }));
 
     const submit = () => {
 
         http.post(`/contents/1/review`)
             .then(() => {
                 message.success('Successfully uploaded! :)');
-                clearData();
                 setTimeout(() => {
                     window.location.reload();
                 }, 2000);
@@ -56,19 +56,16 @@ const Step: React.FC = () => {
         submit();
     }
 
-    function clearData() {
-        setTitle('');
-        setIntro('');
-    }
-
     return (
         <>
-            <Steps current={current} items={items} />
+            <Steps current={current}
+                onChange={onChange}
+                items={items} />
             <div>{steps[current].content}</div>
             <div style={{ marginTop: 24 }}>
                 {current < steps.length - 1 && (
                     <Flex gap="small" wrap>
-                        <Button color="green" variant="solid" onClick={next}>Accept</Button>
+                        <Button color="green" variant="solid" onClick={() => setCurrent(current + 1)}>Accept</Button>
                         <Button color="red" variant="solid" onClick={handleOkAndCancel}>Reject</Button>
                     </Flex>
                 )}
