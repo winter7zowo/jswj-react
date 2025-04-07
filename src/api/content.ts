@@ -1,4 +1,5 @@
-import { api } from "../cfg";
+import { default as api } from "../http";
+import { replaceError } from '../util.ts';
 
 export interface Content {
     id: number;
@@ -16,18 +17,20 @@ export interface ContentResponse {
     totalElements: number;
 }
 
-export const fetchContent = async (page: number, size: number): Promise<ContentResponse> => {
-    return await api
-        .get('/content/list', {
-            params: {
-                page: page,
-                size: size,
-            },
-        })
-        .then((res) => {
-            console.assert(res.status === 200);
-            console.assert(res.data.code === 0);
-            return res.data.data;
-        })
-        .catch(console.error);
+export const fetchContent = async (page: number, size: number): Promise<ContentResponse | void> => {
+    return api.get<unknown, ContentResponse>('/content/list', {
+        params: { page, size },
+    }).catch(replaceError('Failed to fetch content'));
 };
+
+export const deleteContent = async (id: number): Promise<void> => {
+    return api.patch<unknown, void>(`/content/${id}/delete`)
+        .catch(replaceError('Failed to delete this content'));
+};
+
+export const getAllByUser = async (username: string): Promise<ContentResponse | void> => {
+    return api.get<unknown, ContentResponse>(`users/contents/by-user/${username}`, {
+        params: { username },
+    }).catch(replaceError('Failed to fetch content'));
+}
+

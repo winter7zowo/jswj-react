@@ -1,4 +1,5 @@
 export const ExceptionConstants = {
+    SUCCESS: 0,
     MISSING_PARAMETERS: 1001,
     ILLEGAL_PARAMETERS: 1002,
     USER_NOT_FOUND: 2001,
