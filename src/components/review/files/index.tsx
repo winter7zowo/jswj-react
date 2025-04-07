@@ -1,48 +1,60 @@
-import { List, Button } from 'antd';
-import { DownloadOutlined } from '@ant-design/icons';
-import type { UploadFile } from 'antd/es/upload/interface';
+import { Button, message } from 'antd';
+import { Upload } from '@douyinfe/semi-ui';
+import { UploadOutlined } from '@ant-design/icons';
+import http from '../../../http';
+import { FileItem } from '@douyinfe/semi-ui/lib/es/upload';
 import { apiConfig } from '../../../config';
 
 interface FileProps {
-    reviewId: string;
+    files: FileItem[];
+    setFiles: (files: FileItem[]) => void;
+    artifactId: number;
+    setFileUploading: (fileUploading: boolean) => void;
 }
 
-function Files({ reviewId }: FileProps) {
+function Files({ files, setFiles, artifactId, setFileUploading }: FileProps) {
 
-    const files = []
-    const handleDownload = (file: UploadFile) => {
-        const downloadUrl = `${apiConfig.avatarURL}/files/${reviewId}/download/${file.uid}`;
+    function onChange({ fileList }: { fileList: FileItem[] }) {
+        const newFileList = [...fileList]
+        newFileList.forEach(file => { file.preview = true })
+        setFiles(newFileList);
+    }
 
-        const link = document.createElement('a');
-        link.href = downloadUrl;
-        link.download = file.name || 'file';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
+    function handleOnSuccess() {
+        setFileUploading(false) // 上传完成后恢复主弹窗按钮
+    }
+
+    function beforeRemove(fileItem: FileItem): boolean | Promise<boolean> {
+        if (fileItem.status !== 'success' && fileItem.status !== undefined) {
+            return true;
+        }
+        return http.delete(`/files/${fileItem.id}`)
+            .then(() => true)
+            .catch(error => {
+                message.error(`Failed to delete file: ${error.message}`);
+                return false;
+            }) as Promise<boolean>;
+    }
 
     return (
-        <List
-            dataSource={files}
-            renderItem={(file) => (
-                <List.Item
-                    actions={[
-                        <Button
-                            type="link"
-                            icon={<DownloadOutlined />}
-                            onClick={() => handleDownload(file)}
-                        >
-                            下载
-                        </Button>,
-                    ]}
-                >
-                    <List.Item.Meta
-                        title={file.name}
-                        description={`大小: ${(file.size! / 1024).toFixed(2)} KB`}
-                    />
-                </List.Item>
-            )}
-        />
+        <Upload
+            multiple
+            action={`${apiConfig.avatarURL}/files/${artifactId}/upload`}
+            fileName={'file'}
+            fileList={files}
+            maxSize={102400}
+            onChange={onChange}
+            onProgress={() => setFileUploading(true)}
+            onSuccess={handleOnSuccess}
+            beforeRemove={beforeRemove}
+        >
+            <Button
+                style={{ margin: '10px 0 10px 0' }}
+                icon={<UploadOutlined />}
+            >
+                点击上传（最大 100 MB）
+            </Button>
+        </Upload>
     );
 }
 
