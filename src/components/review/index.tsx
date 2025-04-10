@@ -1,7 +1,7 @@
 import { Tag, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { FontSizeOutlined, AlignLeftOutlined, FileOutlined } from '@ant-design/icons';
-import Title from './title';
+import Title from './Title';
 import http from '../../http';
 import Content from './content';
 import Files from './files';
@@ -46,7 +46,7 @@ function Review({ reviewId, reviewStep }: ReviewProps) {
                     <>
                         <div style={{ margin: '20px 0' }}>
                             <Tag color="blue" icon={<FontSizeOutlined />}>Title</Tag>
-                            <Title title={title} />
+                            <Title title={title} setTitle={setTitle} />
                         </div>
                         <div style={{ margin: '20px 0' }}>
                             <Tag color="blue" icon={<AlignLeftOutlined />}>Content</Tag>
@@ -62,7 +62,7 @@ function Review({ reviewId, reviewStep }: ReviewProps) {
                 return (
                     <div style={{ margin: '20px 0' }}>
                         <Tag color="blue" icon={<FontSizeOutlined />}>Title</Tag>
-                        <Title title={title} />
+                        <Title title={title} setTitle={setTitle} />
                     </div>
                 );
             default:

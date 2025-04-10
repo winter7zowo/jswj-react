@@ -1,9 +1,12 @@
 import { useState } from 'react';
-import { Button, Flex, message, Steps } from 'antd';
+import { Button, Flex, Steps, message } from 'antd';
 import Review from '../review';
+import RejectionModal from './rejectionmodal';
 import http from '../../http';
 
 function Step({ reviewId }: { reviewId: string }) {
+
+    const [open, setOpen] = useState(false);
 
     const [current, setCurrent] = useState(0);
 
@@ -39,9 +42,12 @@ function Step({ reviewId }: { reviewId: string }) {
 
     const items = steps.map((item) => ({ key: item.title, title: item.title, description: item.description }));
 
-    const submit = () => {
+    const submitWithModal = () => {
+        setOpen(true)
+    };
 
-        http.post(`/contents/1/review`)
+    const submit = () => {
+        http.post(`/contents/${reviewId}/review`)
             .then(() => {
                 message.success('Successfully uploaded! :)');
                 setTimeout(() => {
@@ -50,10 +56,10 @@ function Step({ reviewId }: { reviewId: string }) {
             })
             .catch(error => message.error(`Failed to upload artifact: ${error.message}`)
             )
-    };
+    }
 
     const handleOkAndCancel = () => {
-        submit();
+        submitWithModal();
     }
 
     return (
@@ -71,11 +77,12 @@ function Step({ reviewId }: { reviewId: string }) {
                 )}
                 {current === steps.length - 1 && (
                     <Flex gap="small" wrap>
-                        <Button color="green" variant="solid" onClick={handleOkAndCancel}>Accept</Button>
+                        <Button color="green" variant="solid" onClick={submit}>Accept</Button>
                         <Button color="red" variant="solid" onClick={handleOkAndCancel}>Reject</Button>
                     </Flex>
                 )}
             </div>
+            <RejectionModal open={open} setOpen={setOpen} reviewId={reviewId} />
         </>
     );
 };
